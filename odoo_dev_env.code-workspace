@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../odoo/19.0"
+		}
+	],
+	"settings": {
+		"xml.symbols.enabled": false,
+		"python.languageServer": "None"
+	}
+}

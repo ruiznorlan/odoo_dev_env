@@ -1,0 +1,131 @@
+# ==========================================================
+# Environment files
+# ==========================================================
+.env
+.env.*
+!.env.example
+
+# ==========================================================
+# Python virtual environments
+# ==========================================================
+.venv/
+venv/
+env/
+ENV/
+
+# ==========================================================
+# Python cache / build files
+# ==========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ==========================================================
+# Odoo local data
+# ==========================================================
+.local/
+filestore/
+sessions/
+*.pid
+*.log
+*.log.*
+*.pot
+*.po~
+*.mo
+
+# ==========================================================
+# Odoo backups / database dumps
+# ==========================================================
+backups/*
+!backups/.gitkeep
+*.sql
+*.dump
+*.backup
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# ==========================================================
+# Odoo addons generated files
+# ==========================================================
+addons/**/__pycache__/
+addons/**/*.py[cod]
+addons/**/*.pyo
+addons/**/*.pot
+addons/**/*.po~
+addons/**/*.mo
+
+# ==========================================================
+# Enterprise / private addons
+# ==========================================================
+addons/enterprise/*
+!addons/enterprise/.gitkeep
+
+# Opcional: si third_party son submódulos o módulos privados, ignóralos también.
+# addons/third_party/*
+# !addons/third_party/.gitkeep
+
+# ==========================================================
+# Docker / local runtime files
+# ==========================================================
+docker-compose.override.yml
+docker-compose.local.yml
+*.local.yml
+
+# Si algún día usas bind mounts locales en vez de Docker volumes:
+postgres-data/
+pgdata/
+mailpit-data/
+
+# ==========================================================
+# VS Code / IDE
+# ==========================================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+!.vscode/launch.json.example
+.idea/
+
+# ==========================================================
+# OS files
+# ==========================================================
+.DS_Store
+Thumbs.db
+
+# ==========================================================
+# Node / frontend cache
+# ==========================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================================
+# Secrets / certificates / keys
+# ==========================================================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.cer
+*.csr
+*.jks
+*.keystore
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
