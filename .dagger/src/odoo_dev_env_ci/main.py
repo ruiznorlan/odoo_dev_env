@@ -58,46 +58,117 @@ class OdooDevEnvCi:
             #!/usr/bin/env bash
             set -euo pipefail
 
+            section() {
+              echo "::group::$1"
+            }
+
+            endsection() {
+              echo "::endgroup::"
+            }
+
+            step() {
+              echo "==> $1"
+            }
+
+            fail() {
+              echo "::error::$1"
+              if [ -f /tmp/pip.log ]; then
+                section "pip install log"
+                tail -n 120 /tmp/pip.log || true
+                endsection
+              fi
+              if [ -f /tmp/odoo.log ]; then
+                section "Odoo server log"
+                tail -n 200 /tmp/odoo.log || true
+                endsection
+              fi
+              exit 1
+            }
+
+            cleanup() {
+              if [ -n "${odoo_pid:-}" ] && kill -0 "$odoo_pid" 2>/dev/null; then
+                kill "$odoo_pid" || true
+                wait "$odoo_pid" || true
+              fi
+            }
+
+            trap cleanup EXIT
+
+            echo "Odoo 19 development environment validation"
+            echo "Repository path: /work/env"
+            echo "Odoo source path: /work/odoo"
+            echo ""
+
+            section "Runtime versions"
+            python --version
+            git --version
+            psql --version
+            curl --version | head -n 1
+            endsection
+
+            section "Service health checks"
+            step "Waiting for PostgreSQL on db:5432"
             until pg_isready -h db -p 5432 -U odoo -d postgres; do
               sleep 1
             done
+            echo "PostgreSQL is ready"
 
+            step "Checking Mailpit web interface on mailpit:8025"
             curl -fsS http://mailpit:8025/ >/dev/null
+            echo "Mailpit is ready"
+            endsection
 
+            section "Python environment"
+            step "Creating virtual environment"
             python -m venv /work/.venv
             . /work/.venv/bin/activate
-            python -m pip install --upgrade pip setuptools wheel
-            python -m pip install -r /work/odoo/requirements.txt
-            python -m pip install debugpy
+            python --version
 
-            python /work/odoo/odoo-bin --help >/dev/null
+            step "Installing Python packaging tools"
+            python -m pip install --disable-pip-version-check --upgrade pip setuptools wheel > /tmp/pip.log 2>&1 || fail "Could not upgrade Python packaging tools"
 
+            step "Installing Odoo requirements"
+            python -m pip install --disable-pip-version-check -r /work/odoo/requirements.txt >> /tmp/pip.log 2>&1 || fail "Could not install Odoo requirements"
+
+            step "Installing debugpy"
+            python -m pip install --disable-pip-version-check debugpy >> /tmp/pip.log 2>&1 || fail "Could not install debugpy"
+            echo "Python dependencies installed"
+            endsection
+
+            section "Odoo smoke checks"
+            step "Validating odoo-bin command"
+            python /work/odoo/odoo-bin --help >/dev/null || fail "odoo-bin --help failed"
+
+            step "Starting Odoo with generated CI config"
             python /work/odoo/odoo-bin -c /tmp/odoo-ci.conf > /tmp/odoo.log 2>&1 &
             odoo_pid="$!"
 
-            for _ in $(seq 1 90); do
-              status="$(curl -sS -o /tmp/odoo-http-body -w '%{http_code}' http://127.0.0.1:8069/ || true)"
+            step "Waiting for HTTP response on http://127.0.0.1:8069/"
+            for attempt in $(seq 1 90); do
+              status="$(curl -s -o /tmp/odoo-http-body -w '%{http_code}' http://127.0.0.1:8069/ || true)"
               if [ "$status" = "200" ] || [ "$status" = "303" ]; then
-                kill "$odoo_pid"
-                wait "$odoo_pid" || true
-                echo "OK: Odoo responded with HTTP $status"
+                echo "Odoo responded with HTTP $status after ${attempt}s"
+                endsection
+                echo ""
+                echo "Validation summary"
+                echo "- PostgreSQL: ready"
+                echo "- Mailpit: ready"
+                echo "- Odoo requirements: installed"
+                echo "- odoo-bin: executable"
+                echo "- Odoo HTTP: $status"
+                echo ""
+                echo "OK: Odoo 19 development environment is working"
                 exit 0
               fi
 
               if ! kill -0 "$odoo_pid" 2>/dev/null; then
-                echo "Odoo exited before serving HTTP"
-                cat /tmp/odoo.log
-                exit 1
+                fail "Odoo exited before serving HTTP"
               fi
 
               sleep 1
             done
 
-            echo "Odoo did not respond on port 8069"
-            cat /tmp/odoo.log
-            kill "$odoo_pid" || true
-            wait "$odoo_pid" || true
-            exit 1
+            fail "Odoo did not respond on port 8069 within 90 seconds"
             """
         )
 
@@ -113,18 +184,23 @@ class OdooDevEnvCi:
                 [
                     "bash",
                     "-lc",
-                    "apt-get update && apt-get install -y --no-install-recommends "
+                    "set -e; "
+                    "echo 'Installing system packages'; "
+                    "(apt-get update && apt-get install -y --no-install-recommends "
                     "git build-essential curl postgresql-client "
                     "libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libpq-dev "
                     "libjpeg-dev zlib1g-dev libffi-dev libssl-dev liblcms2-dev "
                     "libopenjp2-7-dev libtiff-dev libwebp-dev npm node-less "
-                    "&& rm -rf /var/lib/apt/lists/*",
+                    "&& rm -rf /var/lib/apt/lists/*) >/tmp/apt.log 2>&1 "
+                    "|| { echo 'System package installation failed'; tail -n 160 /tmp/apt.log; exit 1; }; "
+                    "echo 'System packages installed'",
                 ]
             )
             .with_exec(
                 [
                     "git",
                     "clone",
+                    "--quiet",
                     "--depth",
                     "1",
                     "--branch",

@@ -9,6 +9,8 @@ jobs:
   dagger:
     name: Validate Odoo dev environment
     runs-on: ubuntu-latest
+    env:
+      DAGGER_NO_NAG: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
