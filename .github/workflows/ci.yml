@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  dagger:
+    name: Validate Odoo dev environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Dagger verification
+        uses: dagger/dagger-for-github@v8.4.1
+        with:
+          version: "v0.21.7"
+          call: verify --source=.

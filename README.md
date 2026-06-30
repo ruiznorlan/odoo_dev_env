@@ -270,6 +270,31 @@ docker compose down -v
 
 > Este ultimo comando elimina los datos locales de PostgreSQL.
 
+## Validacion con Dagger
+
+El repositorio incluye un modulo Dagger y un workflow de GitHub Actions para validar que un clon fresco pueda levantar el ambiente base de Odoo 19.
+
+La validacion:
+
+- Levanta PostgreSQL 16 como servicio Dagger.
+- Levanta Mailpit como servicio Dagger.
+- Clona Odoo `19.0` dentro del contenedor de CI.
+- Instala los requirements de Odoo.
+- Genera un `odoo.conf` temporal con rutas propias del contenedor.
+- Arranca Odoo y valida que responda en `http://127.0.0.1:8069/`.
+
+Para ejecutarlo localmente con Dagger:
+
+```bash
+dagger call verify --source=.
+```
+
+En GitHub Actions se ejecuta desde:
+
+```text
+.github/workflows/ci.yml
+```
+
 ## Datos locales ignorados por Git
 
 El repositorio ignora archivos generados o sensibles, entre ellos:
