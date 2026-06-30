@@ -11,6 +11,19 @@
       "problemMatcher": []
     },
     {
+      "label": "odoo: run",
+      "type": "shell",
+      "command": "/home/ruiznorlan/Documentos/odoo_dev_env/.venv/bin/python /home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin -c /home/ruiznorlan/Documentos/odoo_dev_env/config/odoo.conf",
+      "options": {
+        "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
+        "env": {
+          "PYTHONUNBUFFERED": "1",
+          "PYTHONPATH": "/home/ruiznorlan/Documentos/odoo/19.0/odoo:/home/ruiznorlan/Documentos/odoo_dev_env/addons/custom"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "docker: down",
       "type": "shell",
       "command": "docker compose down",

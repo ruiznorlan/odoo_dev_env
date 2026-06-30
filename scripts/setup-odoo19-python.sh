@@ -155,6 +155,10 @@ cd "${ODOO_DIR}"
 python -m pip install -r requirements.txt
 
 echo ""
+echo "6.1) Instalando debugpy para depuracion desde VS Code..."
+python -m pip install debugpy
+
+echo ""
 echo "7) Validando Odoo..."
 python odoo-bin --help >/dev/null
 

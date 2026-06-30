@@ -3,65 +3,68 @@
   "configurations": [
     {
       "name": "Odoo 19.0",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "/home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin",
       "console": "integratedTerminal",
       "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
-      "python": "${workspaceFolder}/.venv/bin/python",
+      "python": "/home/ruiznorlan/Documentos/odoo_dev_env/.venv/bin/python",
       "args": [
         "-c",
-        "${workspaceFolder}/config/odoo19.conf"
+        "/home/ruiznorlan/Documentos/odoo_dev_env/config/odoo.conf"
       ],
       "env": {
-        "PYTHONUNBUFFERED": "1"
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "/home/ruiznorlan/Documentos/odoo/19.0/odoo:/home/ruiznorlan/Documentos/odoo_dev_env/addons/custom"
       },
       "justMyCode": false,
-      "preLaunchTask": "docker: up"
+      "subProcess": true
     },
     {
       "name": "Odoo 19.0 - actualizar modulo",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "/home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin",
       "console": "integratedTerminal",
       "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
-      "python": "${workspaceFolder}/.venv/bin/python",
+      "python": "/home/ruiznorlan/Documentos/odoo_dev_env/.venv/bin/python",
       "args": [
         "-c",
-        "${workspaceFolder}/config/odoo19.conf",
+        "/home/ruiznorlan/Documentos/odoo_dev_env/config/odoo.conf",
         "-d",
         "${input:databaseName}",
         "-u",
         "${input:moduleName}"
       ],
       "env": {
-        "PYTHONUNBUFFERED": "1"
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "/home/ruiznorlan/Documentos/odoo/19.0/odoo:/home/ruiznorlan/Documentos/odoo_dev_env/addons/custom"
       },
       "justMyCode": false,
-      "preLaunchTask": "docker: up"
+      "subProcess": true
     },
     {
       "name": "Odoo 19.0 - instalar modulo",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "/home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin",
       "console": "integratedTerminal",
       "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
-      "python": "${workspaceFolder}/.venv/bin/python",
+      "python": "/home/ruiznorlan/Documentos/odoo_dev_env/.venv/bin/python",
       "args": [
         "-c",
-        "${workspaceFolder}/config/odoo19.conf",
+        "/home/ruiznorlan/Documentos/odoo_dev_env/config/odoo.conf",
         "-d",
         "${input:databaseName}",
         "-i",
         "${input:moduleName}"
       ],
       "env": {
-        "PYTHONUNBUFFERED": "1"
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "/home/ruiznorlan/Documentos/odoo/19.0/odoo:/home/ruiznorlan/Documentos/odoo_dev_env/addons/custom"
       },
       "justMyCode": false,
-      "preLaunchTask": "docker: up"
+      "subProcess": true
     }
   ],
   "inputs": [
