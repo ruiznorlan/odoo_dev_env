@@ -1,0 +1,9 @@
+[[config]]
+name = "odoo19-dev"
+odoo_path = "/home/ruiznorlan/Documentos/odoo/19.0/odoo"
+python_path = "/home/ruiznorlan/Documentos/odoo_dev_env/.venv/bin/python"
+addons_paths = [
+  "/home/ruiznorlan/Documentos/odoo/19.0/odoo/addons",
+  "/home/ruiznorlan/Documentos/odoo_dev_env/addons/custom",
+]
+diag_missing_imports = "none"

@@ -9,6 +9,21 @@
 	],
 	"settings": {
 		"xml.symbols.enabled": false,
-		"python.languageServer": "None"
+		"python.defaultInterpreterPath": "${workspaceFolder:odoo_dev_env}/.venv/bin/python",
+		"python.terminal.activateEnvironment": true,
+		"python.languageServer": "Pylance",
+		"python.analysis.extraPaths": [
+			"/home/ruiznorlan/Documentos/odoo/19.0/odoo",
+			"/home/ruiznorlan/Documentos/odoo/19.0/odoo/addons",
+			"${workspaceFolder:odoo_dev_env}/addons/custom",
+			"${workspaceFolder:odoo_dev_env}/addons/third_party"
+		],
+		"python.analysis.autoSearchPaths": true,
+		"python.analysis.useLibraryCodeForTypes": true,
+		"python.analysis.typeCheckingMode": "off",
+		"python.analysis.diagnosticMode": "workspace",
+		"Odoo.selectedProfile": "odoo19-dev",
+		"Odoo.serverConfigPath": "/home/ruiznorlan/Documentos/odoo_dev_env/odools.toml",
+		"Odoo.disablePythonLanguageServerPopup": true
 	}
 }

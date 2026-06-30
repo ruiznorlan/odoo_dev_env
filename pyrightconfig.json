@@ -1,0 +1,18 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "include": [
+    "addons/custom",
+    "addons/third_party"
+  ],
+  "extraPaths": [
+    "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
+    "/home/ruiznorlan/Documentos/odoo/19.0/odoo/addons",
+    "addons/custom",
+    "addons/third_party"
+  ],
+  "typeCheckingMode": "off",
+  "useLibraryCodeForTypes": true,
+  "reportMissingImports": "none",
+  "reportMissingModuleSource": "none"
+}

@@ -1,0 +1,79 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Odoo 19.0",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin",
+      "console": "integratedTerminal",
+      "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "-c",
+        "${workspaceFolder}/config/odoo19.conf"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "justMyCode": false,
+      "preLaunchTask": "docker: up"
+    },
+    {
+      "name": "Odoo 19.0 - actualizar modulo",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin",
+      "console": "integratedTerminal",
+      "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "-c",
+        "${workspaceFolder}/config/odoo19.conf",
+        "-d",
+        "${input:databaseName}",
+        "-u",
+        "${input:moduleName}"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "justMyCode": false,
+      "preLaunchTask": "docker: up"
+    },
+    {
+      "name": "Odoo 19.0 - instalar modulo",
+      "type": "python",
+      "request": "launch",
+      "program": "/home/ruiznorlan/Documentos/odoo/19.0/odoo/odoo-bin",
+      "console": "integratedTerminal",
+      "cwd": "/home/ruiznorlan/Documentos/odoo/19.0/odoo",
+      "python": "${workspaceFolder}/.venv/bin/python",
+      "args": [
+        "-c",
+        "${workspaceFolder}/config/odoo19.conf",
+        "-d",
+        "${input:databaseName}",
+        "-i",
+        "${input:moduleName}"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "justMyCode": false,
+      "preLaunchTask": "docker: up"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "databaseName",
+      "type": "promptString",
+      "description": "Nombre de la base de datos de Odoo"
+    },
+    {
+      "id": "moduleName",
+      "type": "promptString",
+      "description": "Nombre tecnico del modulo"
+    }
+  ]
+}
